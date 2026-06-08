@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gajendra Jha — VFX Production Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D0F14;
+    --paper: #F5F0E8;
+    --cream: #EDE8DC;
+    --gold: #C9963A;
+    --gold-light: #E8B84B;
+    --accent: #1B3A6B;
+    --mid: #5A5A6A;
+    --rule: #D4CFC3;
+    --film: #1A1A2E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--film);
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60%;
+    height: 140%;
+    background: radial-gradient(ellipse, rgba(201,150,58,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Film strip decoration */
+  .filmstrip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 28px;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 8px 0;
+    overflow: hidden;
+  }
+
+  .filmstrip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 10px,
+      rgba(255,255,255,0.06) 10px,
+      rgba(255,255,255,0.06) 18px,
+      transparent 18px,
+      transparent 28px
+    );
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-left: 36px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    margin-left: 36px;
+  }
+
+  .hero-name h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 84px);
+    font-weight: 900;
+    line-height: 0.95;
+    color: #F5F0E8;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+
+  .hero-name h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-title {
+    margin-left: 36px;
+    margin-top: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+
+  .hero-title p {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 0.15em;
+    line-height: 1.8;
+  }
+
+  .hero-title p strong {
+    color: rgba(245,240,232,0.85);
+    font-weight: 500;
+  }
+
+  .hero-credits {
+    margin-left: 36px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+
+  .credits-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .credit-films {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .film-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--film);
+    background: var(--gold);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── HERO RIGHT ── */
+  .hero-right {
+    background: var(--paper);
+    padding: 80px 60px 80px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    bottom: 15%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--rule) 30%, var(--rule) 70%, transparent);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.9s forwards;
+  }
+
+  .stat {
+    background: var(--cream);
+    padding: 28px 24px;
+    position: relative;
+  }
+
+  .stat::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+
+  .stat:hover::after { transform: scaleX(1); }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-num sup {
+    font-size: 20px;
+    vertical-align: super;
+    font-weight: 400;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--mid);
+    text-transform: uppercase;
+  }
+
+  .hero-summary {
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.0s forwards;
+  }
+
+  .hero-summary p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--mid);
+    margin-bottom: 24px;
+  }
+
+  .hero-summary p strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 24px;
+    border: 1.5px solid;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .btn-secondary:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ── SCROLLING TICKER ── */
+  .ticker-wrap {
+    background: var(--ink);
+    overflow: hidden;
+    padding: 14px 0;
+    border-top: 1px solid rgba(201,150,58,0.3);
+    border-bottom: 1px solid rgba(201,150,58,0.3);
+  }
+
+  .ticker {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    padding: 0 32px;
+    text-transform: uppercase;
+  }
+
+  .ticker-dot {
+    color: rgba(201,150,58,0.4);
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section {
+    padding: 100px 80px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 60px;
+  }
+
+  /* ── EXPERTISE BANDS ── */
+  .expertise-section {
+    background: var(--cream);
+  }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+  }
+
+  .expertise-card {
+    background: var(--cream);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  .expertise-card:hover {
+    background: var(--paper);
+  }
+
+  .expertise-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .exp-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .exp-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .exp-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--mid);
+  }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .exp-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border: 1px solid rgba(27,58,107,0.25);
+    padding: 3px 8px;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-section {
+    background: var(--film);
+    padding: 100px 80px;
+  }
+
+  .timeline-section .section-title { color: var(--paper); }
+  .timeline-section .section-label { color: var(--gold); }
+
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    max-width: 900px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), rgba(201,150,58,0.1));
+  }
+
+  .tl-item {
+    position: relative;
+    padding-bottom: 52px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+  }
+
+  .tl-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -44px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--film);
+    outline: 1px solid var(--gold);
+  }
+
+  .tl-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .tl-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 4px;
+  }
+
+  .tl-company {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .tl-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.6);
+    max-width: 680px;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: var(--rule);
+  }
+
+  .proj-card {
+    background: var(--paper);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  .proj-card:hover { background: var(--cream); }
+
+  .proj-card.featured {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .proj-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .proj-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .proj-card.featured .proj-title { color: var(--paper); }
+
+  .proj-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--mid);
+  }
+
+  .proj-card.featured .proj-desc { color: rgba(245,240,232,0.6); }
+
+  /* ── TOOLS STRIP ── */
+  .tools-section {
+    background: var(--cream);
+    padding: 80px;
+  }
+
+  .tools-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+
+  .tool-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tool-list {
+    list-style: none;
+  }
+
+  .tool-list li {
+    font-size: 13px;
+    color: var(--mid);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(212,207,195,0.4);
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tool-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: var(--ink);
+    padding: 100px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-section::before {
+    content: 'HIRE ME';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.02);
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .contact-section .section-title { color: var(--paper); text-align: center; }
+  .contact-section .section-label { text-align: center; }
+
+  .contact-tagline {
+    font-size: 16px;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto 50px;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(245,240,232,0.6);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    padding: 14px 22px;
+    border: 1px solid rgba(245,240,232,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .contact-item:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 24px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 60px 40px; min-height: 70vh; }
+    .hero-right { padding: 60px 40px; }
+    .hero-right::before { display: none; }
+    .section { padding: 70px 40px; }
+    .expertise-grid { grid-template-columns: 1fr; }
+    .tools-columns { grid-template-columns: repeat(2, 1fr); }
+    .projects-grid { grid-template-columns: 1fr; }
+    .proj-card.featured { grid-column: 1; }
+    .timeline-section { padding: 70px 40px; }
+    .contact-section { padding: 70px 40px; }
+    footer { padding: 20px 40px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="filmstrip"></div>
+
+    <div class="hero-tag">VFX Production Manager</div>
+
+    <div class="hero-name">
+      <h1>Gajendra<br><em>Jha</em></h1>
+      <div class="hero-title">
+        <p><strong>Show Production Manager @ DNEG</strong></p>
+        <p>Pune, Maharashtra, India</p>
+        <p>PMP · MBA · 13+ Years</p>
+      </div>
+    </div>
+
+    <div class="hero-credits">
+      <div class="credits-label">Selected Credits</div>
+      <div class="credit-films">
+        <span class="film-badge">Kalki</span>
+        <span class="film-badge">Fighter</span>
+        <span class="film-badge">Ghostbusters</span>
+        <span class="film-badge">Masters of the Air</span>
+        <span class="film-badge">Octonauts</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-num">13<sup>+</sup></div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7<sup>+</sup></div>
+        <div class="stat-label">Years in PM Roles</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">DNEG Feature Films</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">20<sup>%</sup></div>
+        <div class="stat-label">Productivity Boost</div>
+      </div>
+    </div>
+
+    <div class="hero-summary">
+      <p>I'm a <strong>VFX Production Manager</strong> who lives in the space between creative vision and on-time delivery. Currently building show pipelines at <strong>DNEG</strong>, I specialize in ShotGrid, crew planning, and keeping high-complexity productions running smoothly.</p>
+      <p>From feature film VFX to AI-powered workflows, I bridge the gap between artists, supervisors, and executives — translating complex production realities into actionable plans.</p>
+      <div class="cta-row">
+        <a href="mailto:gajendrajha09@gmail.com" class="btn btn-primary">Get in Touch</a>
+        <a href="#experience" class="btn btn-secondary">View Experience</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">ShotGrid / Shotgun</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">VFX Production Management</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Show Scheduling</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Generative AI Workflows</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">DNEG</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Crew Planning</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Agile &amp; Waterfall</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Budget Management</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Milestone Delivery</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">ShotGrid / Shotgun</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">VFX Production Management</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Show Scheduling</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Generative AI Workflows</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">DNEG</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Crew Planning</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Agile &amp; Waterfall</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Budget Management</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Milestone Delivery</span><span class="ticker-dot">◆</span>
+  </div>
+</div>
+
+<!-- EXPERTISE -->
+<section class="expertise-section">
+  <div class="section">
+    <div class="section-label reveal">What I Do</div>
+    <div class="section-title reveal">Areas of Expertise</div>
+    <div class="expertise-grid">
+      <div class="expertise-card reveal" data-num="01">
+        <span class="exp-icon">🎬</span>
+        <div class="exp-title">VFX Production Management</div>
+        <p class="exp-desc">End-to-end show management across feature films and episodic productions. From kickoff to final delivery — schedules, shot tracking, crew coordination, and department alignment.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">ShotGrid</span>
+          <span class="exp-tag">Show Scheduling</span>
+          <span class="exp-tag">DFX / CG Coordination</span>
+          <span class="exp-tag">Milestone Tracking</span>
+        </div>
+      </div>
+      <div class="expertise-card reveal" data-num="02">
+        <span class="exp-icon">📊</span>
+        <div class="exp-title">Production Planning & Budgeting</div>
+        <p class="exp-desc">Building and managing production budgets, crew plans, and resource allocations. Monitoring show health and flagging risks before they become delays.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Workday</span>
+          <span class="exp-tag">Cronus</span>
+          <span class="exp-tag">Budget Oversight</span>
+          <span class="exp-tag">Risk Management</span>
+        </div>
+      </div>
+      <div class="expertise-card reveal" data-num="03">
+        <span class="exp-icon">🤖</span>
+        <div class="exp-title">Generative AI & Automation</div>
+        <p class="exp-desc">Hands-on practitioner with AI-powered creative tools, local LLM setups, and workflow automation. Building AI products and exploring where Gen AI meets production management.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Midjourney</span>
+          <span class="exp-tag">ComfyUI</span>
+          <span class="exp-tag">Stable Diffusion</span>
+          <span class="exp-tag">Claude / GPT</span>
+        </div>
+      </div>
+      <div class="expertise-card reveal" data-num="04">
+        <span class="exp-icon">🏗️</span>
+        <div class="exp-title">Pipeline & Workflow Design</div>
+        <p class="exp-desc">Setting up ShotGrid from scratch, establishing communication routines, cross-site coordination plans, and production best practices for complex multi-department shows.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Workflow Setup</span>
+          <span class="exp-tag">Cross-site Coordination</span>
+          <span class="exp-tag">Process Improvement</span>
+        </div>
+      </div>
+      <div class="expertise-card reveal" data-num="05">
+        <span class="exp-icon">🎓</span>
+        <div class="exp-title">Training & Education</div>
+        <p class="exp-desc">Building and delivering training content around VFX Production Management, ShotGrid, and AI-augmented workflows. Currently developing a comprehensive online course.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Course Development</span>
+          <span class="exp-tag">ShotGrid Training</span>
+          <span class="exp-tag">AI Workflow Advisory</span>
+        </div>
+      </div>
+      <div class="expertise-card reveal" data-num="06">
+        <span class="exp-icon">🤝</span>
+        <div class="exp-title">Stakeholder & Client Management</div>
+        <p class="exp-desc">Managing up and across — producers, VFX supervisors, studio clients. Running dailies, debrief sessions, and keeping all parties aligned through complex production realities.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Client Dailies</span>
+          <span class="exp-tag">VFX Reviews</span>
+          <span class="exp-tag">Executive Reporting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE TIMELINE -->
+<section class="timeline-section" id="experience">
+  <div style="max-width:1300px;margin:0 auto;">
+    <div class="section-label reveal">Career Path</div>
+    <div class="section-title reveal">Experience</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Nov 2024 – Present</div>
+        <div class="tl-role">Show Production Manager</div>
+        <div class="tl-company">DNEG · Remote</div>
+        <p class="tl-desc">Leading show workflows, cross-site coordination, and production processes for high-profile VFX productions. ShotGrid, Workday, and Cronus are daily tools. Credits include major feature films.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Aug 2022 – Oct 2024</div>
+        <div class="tl-role">Show Line Producer</div>
+        <div class="tl-company">DNEG · Remote</div>
+        <p class="tl-desc">Tracked client milestones, managed 3–4 week look-ahead schedules, identified delivery risks, liaised with DFX/CG/VFX supervisors, and mentored production coordinators across multiple shows.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Apr 2020 – Jul 2022</div>
+        <div class="tl-role">Project Supervisor</div>
+        <div class="tl-company">Vedarth Animation Studio · Pune</div>
+        <p class="tl-desc">End-to-end production management for animation and VFX projects. Implemented Agile workflows that improved productivity by 20%.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Dec 2017 – May 2019</div>
+        <div class="tl-role">Project Manager</div>
+        <div class="tl-company">TCP International Inc. · Pune</div>
+        <p class="tl-desc">Led budgets, costing, deliverables, and production control. Daily client and leadership reviews, performance appraisals, and pre/post-project analysis for continuous improvement.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Dec 2012 – Nov 2017</div>
+        <div class="tl-role">3D Artist → Team Lead</div>
+        <div class="tl-company">TCP International Inc. · Pune</div>
+        <p class="tl-desc">Progressed from hands-on 3D production (VW, Skoda, BMW, KIA, Isuzu) to leading a team delivering for Advance Auto Parts, KwikFit, Capricorn, and Car Quest.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Pre-2012</div>
+        <div class="tl-role">Character Animator · 3D Artist · Designer</div>
+        <div class="tl-company">Crest Animation Studio · White Wing Solutions · Graphinet</div>
+        <p class="tl-desc">Started career in animation (Octonauts, TV series), 3D content for e-learning (NIIT), and freelance mechanical animation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section">
+  <div class="section-label reveal">Notable Work</div>
+  <div class="section-title reveal">Selected Projects</div>
+  <div class="projects-grid">
+    <div class="proj-card featured reveal">
+      <div class="proj-type">Feature Film VFX · DNEG</div>
+      <div class="proj-title">Kalki · Fighter · Ghostbusters: Afterlife · Masters of the Air</div>
+      <p class="proj-desc">Managed VFX production pipelines, cross-department scheduling, milestone delivery, crew planning, and client communication for multiple major studio productions at DNEG. These credits represent some of the most demanding VFX work in global cinema and episodic streaming.</p>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-type">AI Product · Launched</div>
+      <div class="proj-title">Thumbscale</div>
+      <p class="proj-desc">Built and launched an AI-powered thumbnail generator (thumbscale.com). Managed concept, development, and deployment of a generative AI SaaS product for content creators — from zero to live.</p>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-type">Immersive · Dome Film</div>
+      <div class="proj-title">Wonders of the Universe</div>
+      <p class="proj-desc">Oversaw full production of an immersive planetarium dome film from script to final delivery, coordinating cross-discipline teams across CG, animation, and post.</p>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-type">Education · In Development</div>
+      <div class="proj-title">VFX Production Management in ShotGrid</div>
+      <p class="proj-desc">Developing an 8-module online course for aspiring VFX production managers, covering the full pipeline from show setup to delivery using ShotGrid as the backbone tool.</p>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-type">VR/AR · Training</div>
+      <div class="proj-title">Vehicle Visuals & Fox-AE</div>
+      <p class="proj-desc">Managed VR/AR training solutions for automotive and medical industry clients, coordinating between creative, technical, and client teams through full project cycles.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools-section">
+  <div style="max-width:1300px;margin:0 auto;">
+    <div class="section-label reveal">Stack</div>
+    <div class="section-title reveal">Tools & Software</div>
+    <div class="tools-columns">
+      <div class="reveal">
+        <div class="tool-group-title">VFX Production</div>
+        <ul class="tool-list">
+          <li>ShotGrid / Shotgun</li>
+          <li>FTrack</li>
+          <li>Workday</li>
+          <li>Cronus</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="tool-group-title">Project Management</div>
+        <ul class="tool-list">
+          <li>Jira</li>
+          <li>Microsoft Project</li>
+          <li>Asana</li>
+          <li>Monday.com</li>
+          <li>Smartsheet</li>
+          <li>Trello</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="tool-group-title">Generative AI</div>
+        <ul class="tool-list">
+          <li>MidJourney</li>
+          <li>Stable Diffusion</li>
+          <li>ComfyUI</li>
+          <li>Runway</li>
+          <li>Claude / ChatGPT</li>
+          <li>ElevenLabs</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="tool-group-title">Data & Reporting</div>
+        <ul class="tool-list">
+          <li>Power BI</li>
+          <li>Excel + Macros</li>
+          <li>Zapier / Make</li>
+          <li>GitHub</li>
+          <li>Google Workspace</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="section-label">Let's Talk</div>
+  <div class="section-title">Open to Opportunities</div>
+  <p class="contact-tagline">Looking for a VFX Production Manager who can handle complexity, communicate clearly, and ship on time? Let's connect.</p>
+  <div class="contact-links">
+    <a href="mailto:gajendrajha09@gmail.com" class="contact-item">
+      ✉ gajendrajha09@gmail.com
+    </a>
+    <a href="tel:+917030661610" class="contact-item">
+      📞 +91-7030661610
+    </a>
+    <span class="contact-item">
+      📍 Pune, India · Open to Relocate
+    </span>
+  </div>
+</section>
+
+<footer>
+  <p>Gajendra Jha · VFX Production Manager</p>
+  <p>Pune, Maharashtra, India · 2025</p>
+</footer>
+
+<script>
+  // Intersection Observer for scroll reveals
+  const revealEls = document.querySelectorAll('.reveal, .tl-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
