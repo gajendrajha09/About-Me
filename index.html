@@ -23,6 +23,63 @@
 
   html { scroll-behavior: smooth; }
 
+  /* ── TOP BANNER ── */
+  .portfolio-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: var(--film);
+    border-bottom: 1px solid rgba(201,150,58,0.4);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+  }
+
+  .banner-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .banner-arrow {
+    color: var(--gold);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .banner-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.5);
+    text-transform: uppercase;
+  }
+
+  .banner-back-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--film);
+    background: var(--gold);
+    padding: 7px 18px;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .banner-back-btn:hover {
+    background: var(--gold-light);
+  }
+
+  /* Push page content below the fixed banner */
+  body { padding-top: 44px; }
+
   body {
     background: var(--paper);
     color: var(--ink);
@@ -748,6 +805,15 @@
 </head>
 <body>
 
+<!-- PORTFOLIO BACK BANNER -->
+<div class="portfolio-banner">
+  <div class="banner-left">
+    <span class="banner-arrow">←</span>
+    <span class="banner-text">Gajendra Jha · Portfolio</span>
+  </div>
+  <a href="https://gajendrajha.myportfolio.com" target="_self" class="banner-back-btn">← Back to Portfolio</a>
+</div>
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
@@ -1055,6 +1121,9 @@
     <span class="contact-item">
       📍 Pune, India · Open to Relocate
     </span>
+  </div>
+  <div style="margin-top: 40px;">
+    <a href="https://gajendrajha.myportfolio.com" class="btn btn-secondary" style="border-color: rgba(245,240,232,0.3); color: rgba(245,240,232,0.6);">← Back to Portfolio</a>
   </div>
 </section>
 
